@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://*.mihoyo.com https://*.hoyolab.com https://*.hoyoverse.com; connect-src https://generativelanguage.googleapis.com;">
+<title>Genshin Promote</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ═══ Custom Title Bar ═══ -->
+<header id="titlebar">
+  <div class="tb-drag">
+    <img src="../assets/logo.svg" class="tb-logo" alt="">
+    <span class="tb-title">Genshin Promote</span>
+  </div>
+  <div class="tb-controls">
+    <button id="btn-minimize" class="tb-btn" title="Küçült">━</button>
+    <button id="btn-maximize" class="tb-btn" title="Büyüt">☐</button>
+    <button id="btn-close" class="tb-btn tb-close" title="Kapat">✕</button>
+  </div>
+</header>
+
+<!-- ═══ Sidebar ═══ -->
+<nav id="sidebar">
+  <button class="nav-btn active" data-page="characters">
+    <span class="nav-icon">⚔</span>
+    <span class="nav-label">Karakterler</span>
+  </button>
+  <button class="nav-btn" data-page="weapons">
+    <span class="nav-icon">🗡</span>
+    <span class="nav-label">Silahlar</span>
+  </button>
+  <button class="nav-btn" data-page="artifacts">
+    <span class="nav-icon">🏺</span>
+    <span class="nav-label">Yadigarlar</span>
+  </button>
+  <button class="nav-btn" data-page="ai-team">
+    <span class="nav-icon">🧠</span>
+    <span class="nav-label">AI Takım</span>
+  </button>
+  <button class="nav-btn" data-page="team-rate">
+    <span class="nav-icon">🏆</span>
+    <span class="nav-label">Değerlendir</span>
+  </button>
+  <button class="nav-btn" data-page="settings">
+    <span class="nav-icon">⚙</span>
+    <span class="nav-label">Ayarlar</span>
+  </button>
+</nav>
+
+<!-- ═══ Main Content ═══ -->
+<main id="content">
+
+  <!-- ── Characters Page ── -->
+  <section id="page-characters" class="page active">
+    <div class="page-header">
+      <h1>Karakterler</h1>
+      <button id="btn-fetch" class="btn-primary">
+        <span class="btn-icon">↻</span> Verileri Çek
+      </button>
+    </div>
+
+    <!-- Stats Bar -->
+    <div id="stats-bar" class="stats-bar hidden">
+      <div class="stat-item"><span class="stat-val" id="stat-days">—</span><span class="stat-label">Aktif Gün</span></div>
+      <div class="stat-item"><span class="stat-val" id="stat-achievements">—</span><span class="stat-label">Başarım</span></div>
+      <div class="stat-item"><span class="stat-val" id="stat-characters">—</span><span class="stat-label">Karakter</span></div>
+      <div class="stat-item"><span class="stat-val" id="stat-abyss">—</span><span class="stat-label">Spiral Abyss</span></div>
+    </div>
+
+    <!-- Loading -->
+    <div id="loading" class="loading hidden">
+      <div class="spinner"></div>
+      <p>Veriler alınıyor…</p>
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-state" class="empty-state">
+      <div class="empty-icon">📋</div>
+      <h2>Henüz veri çekilmedi</h2>
+      <p>Ayarları doldurduktan sonra <strong>"Verileri Çek"</strong> butonuna tıkla.</p>
+    </div>
+
+    <!-- Error State -->
+    <div id="error-state" class="error-state hidden">
+      <div class="empty-icon">⚠️</div>
+      <h2>Hata oluştu</h2>
+      <p id="error-msg"></p>
+    </div>
+
+    <!-- Character Grid -->
+    <div id="char-grid" class="char-grid hidden"></div>
+  </section>
+
+  <!-- ── Weapons Page ── -->
+  <section id="page-weapons" class="page">
+    <div class="page-header">
+      <h1>Silahlar</h1>
+    </div>
+    <div id="weapons-empty" class="empty-state">
+      <div class="empty-icon">🗡</div>
+      <h2>Henüz veri yok</h2>
+      <p>Önce <strong>Karakterler</strong> sekmesinden verileri çek.</p>
+    </div>
+    <div id="weapons-grid" class="weapons-grid hidden"></div>
+  </section>
+
+  <!-- ── Artifacts Page ── -->
+  <section id="page-artifacts" class="page">
+    <div class="page-header">
+      <h1>Yadigarlar</h1>
+    </div>
+    <div id="artifacts-empty" class="empty-state">
+      <div class="empty-icon">🏺</div>
+      <h2>Henüz veri yok</h2>
+      <p>Önce <strong>Karakterler</strong> sekmesinden verileri çek.</p>
+    </div>
+    <div id="artifacts-grid" class="artifacts-list hidden"></div>
+  </section>
+
+  <!-- ── AI Team Builder Page ── -->
+  <section id="page-ai-team" class="page">
+    <div class="page-header">
+      <h1>🧠 AI Takım Kurucu</h1>
+    </div>
+
+    <!-- Mode Tabs -->
+    <div class="ai-mode-bar">
+      <button class="ai-mode-btn active" data-mode="general">🚀 Genel Takım</button>
+      <button class="ai-mode-btn" data-mode="character">👤 Karakter Bazlı</button>
+      <button class="ai-mode-btn" data-mode="abyss">🌀 Abyss Takım</button>
+    </div>
+
+    <!-- Controls -->
+    <div class="ai-controls">
+      <!-- Character selector (only for character mode) -->
+      <div id="ai-char-select-wrap" class="ai-control-group hidden">
+        <label>Karakter Seç</label>
+        <select id="ai-char-select"><option value="">-- Karakter seç --</option></select>
+      </div>
+
+      <!-- Patch version selector (only for abyss mode) -->
+      <div id="ai-patch-wrap" class="ai-control-group hidden">
+        <label>Patch Versiyonu</label>
+        <div style="display:flex;gap:6px;align-items:center">
+          <select id="ai-patch-select">
+            <option value="6.4">6.4</option>
+            <option value="6.3">6.3</option>
+            <option value="6.2">6.2</option>
+            <option value="6.1">6.1</option>
+            <option value="6.0">6.0</option>
+            <option value="5.7">5.7</option>
+            <option value="5.6">5.6</option>
+            <option value="5.5">5.5</option>
+            <option value="custom">Elle gir...</option>
+          </select>
+          <input id="ai-patch-custom" type="text" placeholder="örn: 6.5" class="hidden" style="width:70px;padding:7px 10px;border:2px solid var(--border);border-radius:8px;font-size:13px;font-weight:600;background:var(--bg);color:var(--text)">
+        </div>
+      </div>
+
+      <!-- Team count -->
+      <div class="ai-control-group">
+        <label>Takım Sayısı</label>
+        <select id="ai-team-count">
+          <option value="1">1</option>
+          <option value="2" selected>2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+
+      <button id="btn-ai-build" class="btn-primary">
+        <span class="btn-icon">🚀</span> Takım Öner
+      </button>
+    </div>
+
+    <div id="ai-empty" class="empty-state">
+      <div class="empty-icon">🤖</div>
+      <h2>Gemini AI ile takım kur</h2>
+      <p>Önce <strong>Karakterler</strong> sekmesinden verileri çek, modu seç ve <strong>"Takım Öner"</strong> butonuna tıkla.</p>
+    </div>
+
+    <div id="ai-loading" class="loading hidden">
+      <div class="spinner"></div>
+      <p id="ai-loading-text">Gemini analiz ediyor…</p>
+      <p id="ai-loading-retry" class="ai-retry-info hidden"></p>
+    </div>
+
+    <div id="ai-error" class="error-state hidden">
+      <div class="empty-icon">⚠️</div>
+      <h2>Hata oluştu</h2>
+      <p id="ai-error-msg"></p>
+      <p id="ai-cooldown-msg" class="hidden"></p>
+      <button id="btn-ai-retry" class="btn-primary hidden" style="margin-top:12px">
+        <span class="btn-icon">🔄</span> Tekrar Dene
+      </button>
+    </div>
+
+    <div id="ai-results" class="ai-results hidden"></div>
+    <div id="ai-sources" class="ai-sources hidden"></div>
+  </section>
+
+  </section>
+
+  <!-- ── Team Rating Page ── -->
+  <section id="page-team-rate" class="page">
+    <div class="page-header">
+      <h1>🏆 Takım Değerlendir</h1>
+    </div>
+
+    <div class="rate-builder">
+      <p class="hint">Karakterlerinden 4 kişi seç , AI takımını puanlasın ve daha iyisini önersin.</p>
+
+      <div class="rate-slots">
+        <div class="rate-slot" data-slot="0">
+          <div class="rate-slot-avatar"><span>+</span></div>
+          <select class="rate-char-select"><option value="">Seç...</option></select>
+        </div>
+        <div class="rate-slot" data-slot="1">
+          <div class="rate-slot-avatar"><span>+</span></div>
+          <select class="rate-char-select"><option value="">Seç...</option></select>
+        </div>
+        <div class="rate-slot" data-slot="2">
+          <div class="rate-slot-avatar"><span>+</span></div>
+          <select class="rate-char-select"><option value="">Seç...</option></select>
+        </div>
+        <div class="rate-slot" data-slot="3">
+          <div class="rate-slot-avatar"><span>+</span></div>
+          <select class="rate-char-select"><option value="">Seç...</option></select>
+        </div>
+      </div>
+
+      <button id="btn-rate" class="btn-primary" disabled>
+        <span class="btn-icon">🏆</span> Değerlendir
+      </button>
+    </div>
+
+    <div id="rate-empty" class="empty-state">
+      <div class="empty-icon">🎯</div>
+      <h2>Takımını puanlat</h2>
+      <p>Önce <strong>Karakterler</strong> sekmesinden verileri çek, 4 karakter seç ve <strong>"Değerlendir"</strong> butonuna tıkla.</p>
+    </div>
+
+    <div id="rate-loading" class="loading hidden">
+      <div class="spinner"></div>
+      <p>AI değerlendiriyor…</p>
+    </div>
+
+    <div id="rate-error" class="error-state hidden">
+      <div class="empty-icon">⚠️</div>
+      <h2>Hata oluştu</h2>
+      <p id="rate-error-msg"></p>
+    </div>
+
+    <div id="rate-result" class="rate-result hidden"></div>
+  </section>
+
+  <!-- ── Settings Page ── -->
+  <section id="page-settings" class="page">
+    <div class="page-header">
+      <h1>Ayarlar</h1>
+    </div>
+
+    <form id="settings-form" class="settings-card">
+      <h2>🔑 Cookie Bilgileri</h2>
+      <p class="hint">Chrome/Edge → hoyolab.com → F12 → Application → Cookies → hoyolab.com</p>
+
+      <label>
+        <span>ltoken_v2</span>
+        <textarea id="inp-ltoken" rows="2" placeholder="v2_CAIS…"></textarea>
+      </label>
+      <label>
+        <span>ltuid_v2 <small>(sadece rakam)</small></span>
+        <input id="inp-ltuid" type="text" placeholder="123456789">
+      </label>
+      <label>
+        <span>cookie_token_v2</span>
+        <textarea id="inp-cookie-token" rows="2" placeholder="v2_CAQS…"></textarea>
+      </label>
+
+      <h2>🤖 Gemini API</h2>
+      <p class="hint"><a href="https://aistudio.google.com/apikey" target="_blank" style="color:#D4A953">aistudio.google.com/apikey</a> adresinden ücretsiz key al</p>
+      <label>
+        <span>API Key</span>
+        <input id="inp-gemini-key" type="password" placeholder="AIzaSy…">
+      </label>
+
+      <h2>🎮 Oyun Bilgileri</h2>
+      <label>
+        <span>Genshin UID <small>(9 haneli)</small></span>
+        <input id="inp-uid" type="text" placeholder="712345678">
+      </label>
+      <label>
+        <span>Sunucu</span>
+        <select id="inp-server">
+          <option value="os_euro">Avrupa</option>
+          <option value="os_usa">Amerika</option>
+          <option value="os_asia">Asya</option>
+          <option value="os_cht">TW / HK / MO</option>
+        </select>
+      </label>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">💾 Kaydet</button>
+        <span id="save-status" class="save-status"></span>
+      </div>
+    </form>
+  </section>
+
+</main>
+
+<!-- ═══ Character Detail Modal ═══ -->
+<div id="modal-overlay" class="modal-overlay hidden">
+  <div id="modal" class="modal">
+    <button id="modal-close" class="modal-close">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script src="renderer.js"></script>
+</body>
+</html>

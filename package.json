@@ -1,0 +1,45 @@
+{
+  "name": "genshin-promote",
+  "version": "1.0.0",
+  "description": "HoYoLAB API üzerinden Genshin Impact karakter, silah ve eser verisi çekici",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "cli": "node index.js",
+    "build": "electron-builder --win",
+    "build:dir": "electron-builder --win --dir"
+  },
+  "build": {
+    "appId": "com.genshinpromote.app",
+    "productName": "Genshin Promote",
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    },
+    "files": [
+      "electron/**/*",
+      "lib/**/*",
+      "renderer/**/*",
+      "assets/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "output": "dist"
+    }
+  },
+  "dependencies": {
+    "axios": "^1.6.8",
+    "chalk": "^4.1.2",
+    "dotenv": "^16.4.5",
+    "electron-store": "^8.2.0"
+  },
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^24.13.3"
+  }
+}
