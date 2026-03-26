@@ -19,7 +19,9 @@
 - 🏆 **Takım Değerlendir** — Kurduğun takımı AI'a puanlat, iyileştirme önerisi al
 
 ---
-
+## Kurulum 
+- Kurulum için (https://drive.google.com/file/d/1sjqFGGVkJwUy0jAWjy1ZWZ8tx9qGoQ42/view?usp=sharing) Exe dosyasını indirebilirsiniz.
+---
 ## Gereksinimler
 
 - [Node.js 18+](https://nodejs.org/)

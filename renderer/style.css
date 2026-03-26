@@ -503,6 +503,72 @@ body {
 }
 .save-status.show { opacity: 1; }
 
+/* ══════════ Settings Layout ══════════ */
+.settings-layout {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+}
+.settings-layout .settings-card {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.settings-brand-panel {
+  width: 260px;
+  flex-shrink: 0;
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 32px 24px 28px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+}
+.settings-brand-logo {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 18px rgba(212,169,83,0.35));
+  border-radius: 18px;
+  margin-bottom: 6px;
+}
+.settings-brand-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--gold);
+  margin: 0;
+}
+.settings-brand-version {
+  font-size: 12px;
+  color: var(--text-light);
+  margin: 0;
+  letter-spacing: 1px;
+}
+.settings-brand-desc {
+  font-size: 13px;
+  color: var(--text-muted, var(--text-light));
+  margin: 4px 0 0;
+  line-height: 1.6;
+}
+.settings-brand-footer {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  width: 100%;
+}
+.settings-brand-company {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--gold);
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
 /* ══════════ Weapons Grid ══════════ */
 .weapons-grid {
   display: grid;

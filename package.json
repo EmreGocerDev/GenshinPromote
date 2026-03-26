@@ -13,7 +13,8 @@
     "appId": "com.genshinpromote.app",
     "productName": "Genshin Promote",
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "assets/logo.png"
     },
     "nsis": {
       "oneClick": false,
