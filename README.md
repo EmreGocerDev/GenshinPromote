@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.svg" width="80" alt="logo">
+  <img src="assets/logo.png" width="80" alt="logo">
 </p>
 
 <h1 align="center">Genshin Promote</h1>
